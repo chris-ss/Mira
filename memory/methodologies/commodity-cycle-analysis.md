@@ -2,7 +2,7 @@
 
 - status: trial
 - role: standalone skill and equity overlay
-- last_updated: 2026-05-30
+- last_updated: 2026-07-03
 - source_bucket: official, market_data, institutional, practitioner, first_principles, derived_internal
 - source_quality: medium-high
 - credibility_score: medium
@@ -143,7 +143,7 @@ Run the method on at least three cases:
 
 - crude oil or oil equities
 - copper or copper miners
-- gold or gold miners
+- gold or gold miners, with `gold-residual-regime-lens` used only as a labeled sub-lens when bullion is primarily financialized
 
 Optional fourth case:
 
@@ -172,3 +172,7 @@ Required before adoption:
 - documented failure mode from a real case
 - comparison against macro-only or supply-chain-only analysis
 - no unresolved source-quality issue in the trial cases
+
+## Related Sub-Lenses
+
+- `gold-residual-regime-lens`: trial lens for gold / precious-metals cases where the usual macro factor stack no longer explains bullion price cleanly. It must report calculation status and cannot replace physical balance, market pricing, or miner company-alpha separation.

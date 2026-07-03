@@ -95,6 +95,17 @@
 - 股票、ETF、信用或估值是否已经反映商品价格变化？
 - 收益或风险来自 commodity price revision、margin revision、multiple rerating、risk premium change 还是 positioning unwind？
 
+### Precious Metals Residual
+
+For gold and silver miners, add this only when bullion price is the dominant
+driver or the user asks whether the gold regime changed:
+
+- 是否需要 `gold-residual-regime-lens`
+- 当前 bullion move 是 factor-explained、mild divergence 还是 large divergence？
+- 公司股价是否已经 price in 更高 gold plateau？
+- gold beta 如何穿透 realized price、hedges、AISC/cost、reserve grade、production growth 和 jurisdiction risk？
+- 若 residual 判断错了，company alpha 是否仍能支撑 thesis？
+
 ## Primary Output
 
 `commodity` overlay 通常应补充：
@@ -105,6 +116,7 @@
 - cost-curve / margin-sensitivity note
 - hedging and contract adjustment
 - market-pricing map
+- precious-metals residual check when gold / silver regime is central
 - refresh triggers
 - falsification conditions
 
@@ -139,6 +151,7 @@
 - 曲线和库存不支持价格叙事。
 - 市场已经充分 price in 商品路径，剩余 upside 主要取决于更高阶 surprise。
 - 把 commodity beta 当作 company alpha，误判管理层执行或资产质量。
+- 对黄金股直接套金价 residual 结论，而没有检查成本、套保、产量、储量、政治风险和估值是否已反映。
 
 ## Source Quality Guidance
 

@@ -192,6 +192,31 @@ Check:
 
 Do not confuse a positioning squeeze with a durable supply-demand deficit.
 
+#### Precious Metals Residual Lens
+
+For gold, silver and precious-metals ETFs, consider the `gold-residual-regime-lens`
+when the main question is whether price is explained by the usual macro factor
+stack or has entered a residual / bubble-like regime.
+
+Use this lens only as a labeled overlay:
+
+- related card: `memory/methodologies/gold-residual-regime-lens.md`
+- compact template: `templates/gold-residual-regime-check.csv`
+- required status: `gold_residual_lens = qualitative_only`, `recomputed`, or `calculation_gap`
+
+Minimum checks:
+
+- dollar proxy
+- real-rate or purchasing-power proxy
+- inflation or non-gold commodity proxy
+- crisis optionality / volatility proxy
+- ETF, central-bank, futures positioning or investment-flow proxy when available
+- whether residual widening is already priced by bullion, miners or ETFs
+
+Guardrail: residual widening is a risk-regime input, not a standalone timing
+signal. If the factor stack is not independently rebuilt, mark `calculation_gap`
+and keep conclusions at `working_view` or `monitor`.
+
 ### 8. Asset Transmission
 
 Map commodity move to the target asset:
@@ -298,6 +323,7 @@ Every commodity view needs a small dashboard:
 - cost: marginal or incentive-cost proxy if available
 - policy/geopolitics: active event and verification path
 - positioning: COT / ETF flow / open interest where relevant
+- for precious metals when residual lens is used: factor stack status, residual state and calculation status
 
 ## Failure Modes
 
@@ -308,9 +334,13 @@ Every commodity view needs a small dashboard:
 - Confusing spot tightness with long-cycle incentive pricing.
 - Ignoring policy quota, sanctions, export bans or strategic reserve actions.
 - Explaining price action after the fact without predefining refresh and falsification triggers.
+- For gold, treating a residual / MSE spike as a trade signal without rebuilding
+  the factor stack, checking flows / positioning, and separating bullion beta from
+  miner equity alpha.
 
 ## Current Status
 
 - methodology_status: `trial`
 - related_methodology_card: `memory/methodologies/commodity-cycle-analysis.md`
 - related_overlay: `skills/equity-research-core/references/commodity-overlay.md`
+- related_precious_metals_lens: `memory/methodologies/gold-residual-regime-lens.md`

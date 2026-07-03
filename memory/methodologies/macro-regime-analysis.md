@@ -2,7 +2,7 @@
 
 - status: trial
 - role: overlay / framework-lens
-- last_updated: 2026-05-09
+- last_updated: 2026-07-03
 - source_bucket: mixed (`institutional`, `practitioner`, `first_principles`, `derived_internal`)
 - source_quality: medium-high
 - credibility_score: medium-high
@@ -167,7 +167,7 @@ medium-high
 - `cyclical / commodity`
   验证增长、库存、美元、商品价格和利润率传导。
 - `gold / Treasury-sensitive assets`
-  验证实际利率、美元、地缘风险、央行需求和 risk-off/risk-on 传导。
+  验证实际利率、美元、地缘风险、央行需求和 risk-off/risk-on 传导；当黄金价格与常用因子明显背离时，使用 `gold-residual-regime-lens` 标记 residual_state 和 calculation_status。
 - `export chain`
   验证美元、全球需求、关税和地区资本流传导。
 
@@ -194,6 +194,10 @@ medium-high
 - 机构和实务基础足够强，且与 Mira 现有 framework routing 高度兼容。
 - 但宏观分析最容易事后化和泛化，需要用真实案例验证是否能稳定提高研究质量。
 - 先作为 overlay 与 skill 试用，不直接进入 `adopted`。
+
+## Related Sub-Lenses
+
+- `gold-residual-regime-lens`: trial lens for gold and precious-metals cases. It narrows the macro regime map into a factor stack and residual-state check, but remains below macro-regime-analysis until rebuilt and validated across cases.
 
 ## Source Notes
 
