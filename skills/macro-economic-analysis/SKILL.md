@@ -138,6 +138,26 @@ If no credible transmission chain exists, macro should stay as context and not e
 
 如果传导链的第一变量是具体商品供需、库存、期货曲线或成本曲线，先运行 `commodity-cycle-analysis`，再把结论压缩成 macro transmission input。
 
+### Gold And Precious-Metals Transmission
+
+When the object is gold, silver, precious-metals ETFs or gold miners, do not stop
+at broad labels such as `risk-off`, `real rates` or `weak dollar`. If the price
+move is large or poorly explained by the usual variables, consider the
+`gold-residual-regime-lens` as a macro-specific sub-lens.
+
+Record:
+
+- `gold_residual_lens`: `not_used`, `qualitative_only`, `recomputed`, or `calculation_gap`
+- `factor_stack`: dollar, real-rate / purchasing-power, inflation / commodity, crisis-optionality proxies
+- `residual_state`: `explained`, `mild_divergence`, `large_divergence`, `mean_reverting`, `new_plateau_candidate`, or `source_gap`
+- `dominant_macro_chain`
+- `market_pricing`
+- `must_refresh_if`
+
+Use `templates/gold-residual-regime-check.csv` for compact cases. Treat residual
+state as an input to macro regime and top/bottom risk, not as an independent
+buy/sell signal.
+
 ## Data Release Triage
 
 当用户问单次宏观数据发布，例如 CPI、PPI、PCE、NFP、ISM、retail sales 或 GDP 时，先运行 `macro-data-release-triage`，再决定是否升级为完整 `macro-regime-analysis`。
@@ -189,6 +209,12 @@ For an equity research package, add these fields to `case notes` or memo:
 - `macro_mismatch_risk`
 - `macro_refresh_triggers`
 
+For gold or precious-metals work where the residual lens is used, also add:
+
+- `gold_residual_lens`
+- `residual_state`
+- `calculation_status`
+
 ## Practical Checks
 
 - Do not ask whether the economy is good or bad. Ask whether the macro path is changing relative to market expectations.
@@ -206,6 +232,8 @@ For an equity research package, add these fields to `case notes` or memo:
 - Confusing level with change, and change with surprise.
 - Using one macro regime for every asset even when transmission differs.
 - Explaining price action after the fact without predefining falsification triggers.
+- For gold, using residual or bubble language without stating the factor stack,
+  market pricing and calculation status.
 
 ## Source Quality Guidance
 
@@ -219,3 +247,4 @@ For an equity research package, add these fields to `case notes` or memo:
 - methodology_status: `trial`
 - related_methodology_card: `memory/methodologies/macro-regime-analysis.md`
 - related_overlay: `skills/equity-research-core/references/macro-overlay.md`
+- related_precious_metals_lens: `memory/methodologies/gold-residual-regime-lens.md`

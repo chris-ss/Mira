@@ -176,6 +176,13 @@ Then state whether to update:
 - `event-delta.md`
 - `methodology-card.md`
 
+When a research report contributes a reusable method for gold, precious metals
+or macro-sensitive commodities, do not promote the method directly. Classify it
+as `method_delta`, identify the existing Mira method it extends, and record
+whether it should become a labeled lens. For example, a gold residual / MSE
+framework should map to `memory/methodologies/gold-residual-regime-lens.md`
+unless independent data reconstruction supports a stronger methodology review.
+
 ## Output Package
 
 Default output package:
@@ -244,3 +251,6 @@ Use scores only to force structure, not to replace judgment.
 - If independent verification is unavailable, keep conclusions at `working_view`, `monitor` or `source_gap`.
 - If valuation math is central and cannot be reproduced, mark `calculation_gap` and avoid strong target-price conclusions.
 - If the report only adds opinion and no new evidence, do not update the durable thesis; record `no_new_evidence` or `method_delta` only.
+- If a report's main value is a reusable model or factor lens, keep report facts
+  attributed to the report and route the method through methodology review before
+  treating it as a Mira framework.

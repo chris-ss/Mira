@@ -2,7 +2,7 @@
 
 - status: trial
 - role: overlay / risk-regime lens
-- last_updated: 2026-06-03
+- last_updated: 2026-07-03
 - source_bucket: mixed (`institutional`, `academic`, `official_market_data`, `practitioner`, `derived_internal`)
 - source_quality: medium-high
 - credibility_score: medium
@@ -80,6 +80,16 @@ Is the object in `trend_confirmation`, `fragile_upside`, `distribution_risk`, `c
   - customer concentration, leverage, funding, regulatory risk, inventory reversal, technology transition, short squeeze, policy rescue, forced selling.
 
 ## Diagnostic Lenses
+
+### Precious-Metals Residual Input
+
+For gold, silver or precious-metals baskets, `gold-residual-regime-lens` can
+feed this overlay when bullion has moved faster than the usual dollar, real-rate,
+inflation / commodity and crisis-optionality factor stack can explain.
+
+Use the residual state only as an input to `expectation_burden`,
+`fundamental_slope` and `next_catalyst_burden`; it is not a timing model and
+does not replace reaction quality, positioning or market-pricing checks.
 
 ### 1. Fundamental Slope
 
