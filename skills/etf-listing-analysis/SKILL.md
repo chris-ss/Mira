@@ -1,3 +1,8 @@
+---
+name: etf-listing-analysis
+description: Analyze new, pending, or expanding ETF products as product signals, exposure maps, demand indicators, and potential asset-pricing read-throughs.
+---
+
 # ETF Listing Analysis Skill
 
 这个 skill 用于分析新上市 ETF、即将上市 ETF、ETF 申请文件和 ETF 产品线扩张。

@@ -1,3 +1,8 @@
+---
+name: research-report-interpretation
+description: Interpret sell-side, institutional, expert, or investor research by extracting claims, assumptions, valuation drivers, verification needs, and thesis impact.
+---
+
 # Research Report Interpretation Skill
 
 这个 skill 用于解读券商、卖方、机构、专家或投资者研究报告。它的目标不是复述研报，而是把一份报告拆成可验证 claim、隐含假设、预期变量、估值驱动和对 Mira thesis 的增量影响。

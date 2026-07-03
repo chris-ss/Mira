@@ -1,3 +1,8 @@
+---
+name: earnings-report-analysis
+description: Analyze earnings releases, filings, transcripts, guidance, peer comparisons, market reaction, and thesis impact for a company reporting event.
+---
+
 # Earnings Report Analysis Skill
 
 这个 skill 用于对单家公司的一份季报、半年报或年报做结构化分析。它服务于 `research package`，但输出重点从完整投资 memo 收窄到财报质量、经营变化和预期差。

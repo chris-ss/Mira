@@ -26,7 +26,7 @@ Use this before handing off a formal research output.
 - [ ] Every durable conclusion has an evidence-log row or explicit source note.
 - [ ] Newly supplied files, API pulls, vendor exports or portfolio data have an
   ingestion artifact or an explicit ingestion waiver.
-- [ ] New evidence logs use the v1.2 schema (posture fields + `source_language` / `translation_basis`), or explicitly state why a legacy v1 / v1.1 schema is being used.
+- [ ] Evidence surface matches depth: `quick_map` may use source notes lite; retained `evidence-log.csv` artifacts use the v1.2 schema (posture fields + `source_language` / `translation_basis`) unless a legacy v1 / v1.1 schema is explicitly waived.
 - [ ] Non-English primary sources record `source_language` and `translation_basis`; judgment-bearing translated quotes keep `original_excerpt=` in `notes` (claim_text stays a single verifiable claim).
 - [ ] Formal case packages include `research-package-manifest.json` with hero artifacts, support artifacts, readiness, source scope and refresh conditions.
 - [ ] `readiness_level`, `readiness_basis` and `blocking_gaps` are stated before any actionability conclusion.

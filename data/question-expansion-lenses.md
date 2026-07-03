@@ -1,8 +1,8 @@
 # Mira Question Expansion Lenses
 
-This file defines a light question-expansion layer for Mira routing and
-progressive follow-up. It helps the agent ask a better research question before
-spending source, calculation or artifact budget.
+This file defines a light question-expansion helper for Mira routing and
+progressive follow-up. It helps the agent ask a better research question only
+when that improves the current route's evidence path.
 
 This is not a second research framework. Use it only to sharpen the current
 route. Default to `none` when a lens does not materially improve evidence
@@ -10,8 +10,19 @@ quality, falsifiability or next-route selection.
 
 ## Operating Rule
 
-After `depth_mode` is selected and before information-value / knowability is
-finalized, choose at most two lenses:
+Lenses are optional. Default to `primary_question_lens=none`.
+
+After `depth_mode` and `task_mode` are selected, choose a lens only when it
+changes evidence quality, falsifiability, quant requirements, readiness, or the
+next follow-up. Deterministic tasks should not receive a lens:
+
+- extract a fact from a filing, table, transcript, or user-provided document
+- recalculate a metric with a known formula
+- summarize a provided source without thesis interpretation
+- check whether a file, schema, route, or validation rule exists
+
+When a lens is useful, choose at most one primary lens. A second lens is allowed
+only when it changes readiness or the next route:
 
 - `primary_question_lens`: the highest-value lens, or `none`.
 - `selected_question_lenses`: complete ordered list of active question lenses,
@@ -24,13 +35,16 @@ finalized, choose at most two lenses:
 If the lens requirements are unavailable, keep the answer at `working_view`,
 `source_gap`, `calculation_gap`, `needs_refresh` or equivalent downgrade status.
 
-`question_lens` rewrites or sharpens the question before evidence work.
+`question_lens` sharpens the question before evidence work. It must not rewrite
+the user's clear intent or broaden the object silently.
 `selected_lenses` in single-equity routing selects analysis frameworks such as
 variant perception. They do not replace each other.
 
 Question expansion is scoped to the current route and depth. If a lens shows
 that a broader scope or deeper package is needed, surface that as an explicit
 upgrade path or progressive follow-up rather than silently expanding the task.
+When the user asks for production-style work, complete the requested base task
+first and put optional exploratory lenses after the answer.
 
 ## Lenses
 

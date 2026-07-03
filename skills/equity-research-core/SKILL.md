@@ -1,3 +1,8 @@
+---
+name: equity-research-core
+description: Run Mira's core single-equity research workflow across fundamentals, financial quality, macro context, technical pricing, events, and thesis framing.
+---
+
 # Equity Research Core Skill
 
 这是当前主 research skill，用于在单次研究中统一处理：

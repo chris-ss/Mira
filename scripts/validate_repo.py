@@ -205,6 +205,7 @@ FENCE_RE = re.compile(r"^```\s*$")
 LOCAL_ABSOLUTE_PATH_RE = re.compile(
     r"(/" r"Users/[^)\s,]+|/" r"private/(?:tmp|var)/[^)\s,]+)"
 )
+SKILL_FRONTMATTER_FIELD_RE = re.compile(r"^([A-Za-z_][A-Za-z0-9_-]*):\s*(.+?)\s*$")
 
 THESIS_STATES = {
     "draft",
@@ -1042,6 +1043,49 @@ def validate_markdown_vocabulary(path: Path) -> list[Issue]:
     return issues
 
 
+def validate_skill_frontmatter(path: Path) -> list[Issue]:
+    """Validate the minimal YAML frontmatter expected by skill installers."""
+    issues: list[Issue] = []
+    lines = path.read_text(encoding="utf-8").splitlines()
+    if not lines or lines[0].strip() != "---":
+        return [Issue("ERROR", path, 1, "SKILL.md missing YAML frontmatter")]
+
+    end_index: int | None = None
+    for i, line in enumerate(lines[1:], start=2):
+        if line.strip() == "---":
+            end_index = i
+            break
+    if end_index is None:
+        return [Issue("ERROR", path, 1, "SKILL.md frontmatter is not closed")]
+
+    fields: dict[str, str] = {}
+    for line_no, line in enumerate(lines[1 : end_index - 1], start=2):
+        if not line.strip() or line.lstrip().startswith("#"):
+            continue
+        match = SKILL_FRONTMATTER_FIELD_RE.match(line)
+        if not match:
+            issues.append(Issue("ERROR", path, line_no, "invalid SKILL.md frontmatter line"))
+            continue
+        fields[match.group(1)] = match.group(2).strip().strip("\"'")
+
+    for field in ("name", "description"):
+        if not fields.get(field):
+            issues.append(Issue("ERROR", path, 1, f"SKILL.md frontmatter missing `{field}`"))
+
+    expected_name = path.parent.name
+    actual_name = fields.get("name")
+    if actual_name and actual_name != expected_name:
+        issues.append(
+            Issue(
+                "WARN",
+                path,
+                1,
+                f"SKILL.md frontmatter name `{actual_name}` does not match directory `{expected_name}`",
+            )
+        )
+    return issues
+
+
 def validate_no_local_absolute_paths(path: Path) -> list[Issue]:
     """Prevent local workstation paths from leaking into portable docs."""
     if path.is_dir() or ".git" in path.parts:
@@ -1620,6 +1664,8 @@ def validate_repo(root: Path, as_of: date) -> list[Issue]:
         issues.extend(validate_no_local_absolute_paths(path))
         issues.extend(validate_staleness(path, as_of))
         issues.extend(validate_markdown_vocabulary(path))
+        if path.name == "SKILL.md":
+            issues.extend(validate_skill_frontmatter(path))
     for path in sorted(root.glob("**/*.csv")):
         if ignored(path):
             continue
@@ -1658,6 +1704,8 @@ def validate_paths(paths: list[Path], as_of: date) -> list[Issue]:
                     issues.extend(validate_no_local_absolute_paths(md_path))
                     issues.extend(validate_staleness(md_path, as_of))
                     issues.extend(validate_markdown_vocabulary(md_path))
+                    if md_path.name == "SKILL.md":
+                        issues.extend(validate_skill_frontmatter(md_path))
             decision_log = path / "decision-log.csv"
             if decision_log.exists():
                 issues.extend(validate_no_local_absolute_paths(decision_log))
@@ -1688,6 +1736,10 @@ def validate_paths(paths: list[Path], as_of: date) -> list[Issue]:
             issues.extend(validate_calculation_ledger(path))
         elif path.name == "research-package-manifest.json":
             issues.extend(validate_research_package_manifest(path))
+        elif path.name == "SKILL.md":
+            issues.extend(validate_no_local_absolute_paths(path))
+            issues.extend(validate_markdown_vocabulary(path))
+            issues.extend(validate_skill_frontmatter(path))
         elif path.as_posix().endswith("examples/routing-examples.md"):
             issues.extend(validate_routing_examples(path.parent.parent))
         else:

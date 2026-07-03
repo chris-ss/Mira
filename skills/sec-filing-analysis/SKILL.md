@@ -1,3 +1,8 @@
+---
+name: sec-filing-analysis
+description: Analyze SEC disclosures for lightweight fact supplements or deep filing reviews, including source gaps, accounting quality, and thesis-relevant deltas.
+---
+
 # SEC Filing Analysis Skill
 
 This skill is used when Mira needs to analyze SEC disclosure itself, not merely cite SEC as a source.

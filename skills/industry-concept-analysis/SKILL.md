@@ -1,3 +1,8 @@
+---
+name: industry-concept-analysis
+description: Map an unclear industry concept into boundaries, value chain, supply-demand mechanics, profit pools, evidence gaps, and investable candidates.
+---
+
 # Industry Concept Analysis Skill
 
 这个 skill 用于把一个不清晰的产业概念快速拆成可研究、可跟踪、可映射到标的的产业链框架。

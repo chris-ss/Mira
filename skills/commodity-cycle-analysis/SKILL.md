@@ -1,3 +1,8 @@
+---
+name: commodity-cycle-analysis
+description: Analyze commodity cycles, futures curves, inventories, cost curves, policy/geopolitics, positioning, and transmission into related assets.
+---
+
 # Commodity Cycle Analysis Skill
 
 这个 skill 用于研究实物大宗商品、商品期货曲线、资源周期和商品价格对资产的传导。

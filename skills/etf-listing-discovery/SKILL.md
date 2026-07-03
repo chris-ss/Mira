@@ -1,3 +1,8 @@
+---
+name: etf-listing-discovery
+description: Discover listed, pending, filed, or newly announced ETFs and create a structured candidate watchlist for ETF listing analysis.
+---
+
 # ETF Listing Discovery Skill
 
 这个 skill 用于查找新上市、即将上市、已提交申请或刚被媒体/发行人宣布的 ETF/ETP。
@@ -166,4 +171,3 @@ ETF listing discovery -> new-etf-watchlist -> ETF listing analysis
 - 产品提供了新的资产可达性、收益结构、杠杆/反向工具或监管突破
 - 上市后 AUM、成交或期权活动明显放量
 - 成分股流动性较低，可能存在资金传导
-

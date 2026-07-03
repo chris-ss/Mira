@@ -1,3 +1,8 @@
+---
+name: data-analysis-quality-gate
+description: Gate quantitative Mira conclusions by requiring reproducible data, formulas, calculation ledgers, or explicit downgrades when numbers drive judgment.
+---
+
 # Data Analysis Quality Gate
 
 这个 skill 用于在 Mira 研究中判断数量型结论是否需要可复算数据、工具计算或显式降级。

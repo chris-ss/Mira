@@ -4,6 +4,32 @@
 
 `source-registry.csv` 回答“材料从哪里来”。`evidence-log.csv` 回答“这条被用于研究的具体信息是什么、性质是什么、能否支撑结论”。
 
+## Usage Profiles
+
+不要把完整 `evidence-log.csv` 当成所有回答的默认负担。先按真实影响选择证据表面：
+
+| profile | use when | required evidence surface |
+| --- | --- | --- |
+| `source_notes_lite` | `quick_map`、一次性 triage、明确事实查询、文件/代码问题定位 | 行内 source note 或短 source list，必须含来源、时间边界、刷新条件；不要求 CSV |
+| `claim_log_standard` | `standard` research package、earnings package、report interpretation、retained case | 本文件的 canonical `evidence-log.csv` |
+| `audit_log_full` | public-grade package、跨语言关键引用、可复算结论、需要 handoff 的 durable thesis | canonical `evidence-log.csv` + source registry / calculation ledger / ingestion log as triggered |
+
+`source_notes_lite` 最小字段：
+
+```text
+source_id | source | claim_summary | authority_level | as_of_date | treatment | refresh_condition
+```
+
+只有当结论需要被保留、复核、发布、复算或交接时，才升级到完整 CSV。这样保留
+Facts / Inferences / Judgments、L1-L6、refresh 条件这些低成本防错机制，同时避免把 quick work 变成填表任务。
+
+字段归属原则：
+
+- business claim 留在 `evidence-log.csv`
+- source acquisition / permission 留在 ingestion 或 source registry
+- formula and derived math 留在 calculation ledger
+- agent telemetry 不应成为分析师必须手填的业务字段；仅在 retained package 中保留 `used_by_agent` / `used_by_skill` 作为审计线索
+
 ## Canonical Columns
 
 所有新的 `evidence-log.csv` 必须使用以下表头，顺序固定（v1.2）：

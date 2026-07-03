@@ -1,3 +1,8 @@
+---
+name: macro-economic-analysis
+description: Convert macroeconomic evidence into asset-pricing implications across growth, inflation, policy, rates, dollar, credit, liquidity, and risk appetite.
+---
+
 # Macro Economic Analysis Skill
 
 这个 skill 用于把宏观经济分析转成可执行的资产定价判断。
