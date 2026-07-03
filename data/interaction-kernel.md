@@ -56,6 +56,9 @@ Every substantive Mira answer must check:
   readiness, thesis state, actionability boundary or the next route.
 - Whether a route-bound, object-specific progressive follow-up would improve
   boundary, evidence path, calculation depth, readiness or next route.
+  In `quick_map`, make that follow-up route-aware: name what the user's answer
+  changes and whether the next step stays in a narrower `quick_map`, moves to a
+  different loop, or upgrades depth. Do not use a generic continuation prompt.
   For `standard`, `deep_dive` or decision-grade contexts, at least one follow-up
   should move beyond boundary/data hygiene into pricing variables, consensus,
   falsification or the next route.

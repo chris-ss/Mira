@@ -43,7 +43,9 @@ Every formal output must:
   handoff, follow-up answer continuation, or an explicit waiver
 - end with 1-3 route-bound, object-specific progressive follow-up prompts when
   they can improve research boundary, evidence quality, readiness, thesis
-  state, actionability boundary or next-route selection
+  state, actionability boundary or next-route selection; in `quick_map`, the
+  default follow-up is route-aware and names what the user's answer changes,
+  which may be a narrower `quick_map`, a different loop, or a deeper package
 - never silently omit the interaction step: if no question or handoff is useful,
   state `followup_prompt_mode=none` and a route-specific waiver reason
 - downgrade conclusions when evidence quality is weak
@@ -116,7 +118,7 @@ for continuity and use tracked memory only as product context or examples.
 
 | depth_mode | use when | default cost control |
 | --- | --- | --- |
-| `quick_map` | fast read, early triage, unclear source boundary | read only the most relevant sources; output routing card, core judgment, source notes, refresh triggers and light progressive follow-up unless explicitly waived |
+| `quick_map` | fast read, early triage, unclear source boundary | read only the most relevant sources; output routing card, core judgment, source notes, refresh triggers and one route-aware follow-up unless explicitly waived |
 | `standard` | normal research package, earnings package, monitoring update, daily/weekly market briefing | load only routed loop / skill plus triggered references; output required package artifacts |
 | `deep_dive` | long-term thesis, complex valuation, SEC deep dive, PM / methodology review | allow extra sources and artifacts only when each one improves evidence quality, actionability, or refresh conditions |
 
