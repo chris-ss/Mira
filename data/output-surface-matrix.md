@@ -85,6 +85,34 @@ surface:
 - one route-bound, object-specific critical interaction: a light follow-up,
   workflow handoff or explicit waiver
 
+Default closing contract:
+
+```text
+按 <market_scope> / quick_map / 截止 <time_boundary>：<one-line assumption>
+核心判断：<answer-first working view>
+最大缺口：<source_gap or calculation_gap that caps readiness>
+刷新触发：<stale_after or must_refresh_if>
+下一步最有用的问题：<object-specific question>；回答后改变 <evidence_path/calculation_depth/readiness/next_route>
+```
+
+The follow-up is route-aware, not a courtesy question. It must say what
+answering it changes: research boundary, evidence path, calculation depth,
+readiness level or the next loop/skill. Sometimes the correct next step is to
+stay in `quick_map` with a narrower boundary; do not imply escalation when the
+answer would not improve readiness. Avoid generic prompts such as "你还想看什么"
+or "要不要继续".
+
+For common quick_map prompts, bind the follow-up to the next route:
+
+| prompt shape | follow-up anchor | likely next route |
+| --- | --- | --- |
+| 预期差 / variant perception | consensus proxy, pricing variable, estimate revision source | `standard` single-equity research or `thesis-update-loop` |
+| 贵不贵 / valuation | valuation anchor, implied expectation, peer/time-series base | `standard` with quant/calculation gate |
+| 财报 / event reaction | pre-event expectation, actual delta, guide/print mismatch | `earnings_event` or `event-delta-loop` |
+| 今天 / 现在 / latest market move | quote/publish time, cross-check, market-pricing snapshot | live-data refresh then quick_map/standard |
+| 能不能买 / 加 / 减 / 冲 | time window, position context, invalidation level | actionability risk-control gate; no sizing without holdings |
+| 研报 / PDF / sell-side note | source permission, report claim to verify, conflict with Mira thesis | research-report interpretation |
+
 If `interaction_mode=quick_answer`, keep this surface compact: answer first,
 then only show the source boundary, uncertainty, refresh/reversal condition and
 critical interaction in the smallest useful form. The critical interaction must
