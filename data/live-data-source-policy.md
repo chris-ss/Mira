@@ -44,6 +44,13 @@ Use `Asia/Shanghai`, `Asia/Seoul`, `Asia/Tokyo`, `Asia/Hong_Kong` or
 
 ## Source Stack
 
+If a local authorized broker/provider connector is configured as
+`MIRA_MARKET_DATA_DEFAULT_SOURCE` and is reachable, treat it as the first live
+market-pricing source for quote-bearing questions in markets covered by its
+local entitlements. Record the connector `source_id`, quote time, permission
+boundary and whether a public cross-check was skipped or performed. Public
+aggregators remain fallback/cross-check sources, not the local default.
+
 Prefer the narrowest available source stack for the object:
 
 | object | preferred live sources | fallback sources | minimum cross-check |

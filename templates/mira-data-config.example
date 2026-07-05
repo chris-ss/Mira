@@ -51,3 +51,28 @@ MIRA_CONTACT_EMAIL=you@your-domain.com
 # MIRA_IBKR_HIST_BAR_SIZE=1 day
 # MIRA_IBKR_HIST_WHAT=TRADES
 # MIRA_IBKR_HIST_USE_RTH=1
+
+# --- Optional local Futu OpenD quote connection ---------------------------
+# Keep these in private/mira-data.env or environment variables only.
+# The adapter is quote-read-only and requires optional Python package:
+# futu-api. It does not create a trade context or place orders.
+# Futu symbols are market-prefixed, e.g. US.AAPL, HK.00700, SH.600519.
+# If you pass an unprefixed symbol, MIRA_FUTU_DEFAULT_MARKET is prepended.
+# MIRA_FUTU_HOST=127.0.0.1
+# MIRA_FUTU_PORT=11111
+# MIRA_FUTU_DEFAULT_MARKET=US
+# MIRA_FUTU_CURRENCY=USD
+# MIRA_FUTU_TIMEOUT=10
+# MIRA_FUTU_HIST_START=
+# MIRA_FUTU_HIST_KTYPE=K_DAY
+# MIRA_FUTU_HIST_AUTYPE=QFQ
+
+# --- Local live market-data preference ------------------------------------
+# Set this only on machines where the local broker/provider connector is
+# authorized and reachable. When set to futu_opend, `fetch market_price` and
+# technical OHLCV routines prefer Futu OpenD over public delayed aggregators.
+# MIRA_MARKET_DATA_DEFAULT_SOURCE=futu_opend
+# MIRA_LIVE_MARKET_DATA_SOURCE=futu_opend_local
+# MIRA_BROKER_DATA_PRIORITY=futu_opend_local,ibkr_gateway_local
+# MIRA_FUTU_ENABLED_MARKETS=US,HK,CN_A_SHARE,SG,JP
+# MIRA_FUTU_PERMISSION_NOTES=

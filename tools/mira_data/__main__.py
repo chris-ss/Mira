@@ -13,7 +13,7 @@ import argparse
 import sys
 
 from . import config, fundamentals, net, screening, technical
-from .adapters import bls, ibkr_gateway, sec_companyfacts, yahoo_chart
+from .adapters import bls, futu_opend, ibkr_gateway, sec_companyfacts, yahoo_chart
 from .emit import emit_bundle
 
 FETCHERS = {
@@ -32,6 +32,17 @@ FETCHERS = {
     "ibkr_historical_bars": ("IBKR local Gateway historical bars",
                              ibkr_gateway.fetch_historical_bars,
                              ibkr_gateway.GATEWAY_ENDPOINT),
+    "futu_market_price": ("Futu OpenD local Gateway", futu_opend.fetch_market_price,
+                          futu_opend.OPEND_ENDPOINT),
+    "futu_historical_bars": ("Futu OpenD local Gateway historical bars",
+                             futu_opend.fetch_historical_bars,
+                             futu_opend.OPEND_ENDPOINT),
+    "futu_option_chain": ("Futu OpenD local Gateway option chain",
+                          futu_opend.fetch_option_chain,
+                          futu_opend.OPEND_ENDPOINT),
+    "futu_future_info": ("Futu OpenD local Gateway futures info",
+                         futu_opend.fetch_future_info,
+                         futu_opend.OPEND_ENDPOINT),
 }
 
 
@@ -100,6 +111,10 @@ def main(argv: list[str] | None = None) -> int:
                       help="private output directory")
     snap.add_argument("--as-of", default=None)
 
+    futu = sub.add_parser("futu", help="read-only Futu OpenD utilities")
+    futu_sub = futu.add_subparsers(dest="futu_cmd", required=True)
+    futu_sub.add_parser("probe", help="connect to local Futu OpenD and close")
+
     args = parser.parse_args(argv)
     if args.cmd == "fetch":
         return _do_fetch(args)
@@ -115,6 +130,8 @@ def main(argv: list[str] | None = None) -> int:
         return _do_validate(args)
     if args.cmd == "ibkr":
         return _do_ibkr(args)
+    if args.cmd == "futu":
+        return _do_futu(args)
     parser.error("unknown command")
     return 2
 
@@ -296,6 +313,23 @@ def _do_ibkr(args) -> int:
     return 2
 
 
+def _do_futu(args) -> int:
+    if args.futu_cmd == "probe":
+        try:
+            endpoint = futu_opend.probe()
+        except net.FetchError as exc:
+            print(f"source_gap: could not connect to Futu OpenD: {exc}", file=sys.stderr)
+            return 1
+        print("# futu opend")
+        print(f"  endpoint           : {endpoint}")
+        print("  connection         : ok")
+        print("  mode               : quote_readonly")
+        return 0
+
+    print(f"error: unknown futu command {args.futu_cmd}", file=sys.stderr)
+    return 2
+
+
 def _do_config(_args) -> int:
     ua, configured = config.contact_ua()
     print("# mira_data config")
@@ -305,6 +339,10 @@ def _do_config(_args) -> int:
         "MIRA_CONTACT_EMAIL", "MIRA_CONTACT_NAME", "FRED_API_KEY", "BEA_API_KEY",
         "MIRA_IBKR_HOST", "MIRA_IBKR_PORT", "MIRA_IBKR_CLIENT_ID",
         "MIRA_IBKR_ACCOUNT", "MIRA_IBKR_READONLY", "MIRA_IBKR_MARKET_DATA_TYPE",
+        "MIRA_FUTU_HOST", "MIRA_FUTU_PORT", "MIRA_FUTU_DEFAULT_MARKET",
+        "MIRA_FUTU_CURRENCY",
+        "MIRA_MARKET_DATA_DEFAULT_SOURCE", "MIRA_LIVE_MARKET_DATA_SOURCE",
+        "MIRA_BROKER_DATA_PRIORITY", "MIRA_FUTU_ENABLED_MARKETS",
     ):
         print(f"  {key:<18} : {'set' if config.get(key) else '-'}")
     print(f"  searched files     : {', '.join(config._candidate_paths())}")
@@ -314,9 +352,10 @@ def _do_config(_args) -> int:
 
 
 def _do_fetch(args) -> int:
-    label, fetcher, endpoint_tmpl = FETCHERS[args.family]
+    family = _effective_fetch_family(args.family)
+    label, fetcher, endpoint_tmpl = FETCHERS[family]
     symbol = args.symbol
-    if args.family in {"ibkr_positions", "ibkr_account_summary"} and not symbol:
+    if family in {"ibkr_positions", "ibkr_account_summary"} and not symbol:
         symbol = config.get("MIRA_IBKR_ACCOUNT", "ALL") or "ALL"
     elif not symbol:
         print(f"error: fetch {args.family} requires a symbol", file=sys.stderr)
@@ -328,11 +367,14 @@ def _do_fetch(args) -> int:
         return 1
 
     records = res.records
-    display_object = {
-        "ibkr_positions": "IBKR_POSITIONS",
-        "ibkr_account_summary": "IBKR_ACCOUNT_SUMMARY",
-    }.get(args.family, symbol.upper())
-    print(f"# {display_object} {args.family} via {label}  ({len(records)} claims)")
+    if family.startswith("futu_"):
+        display_object = _display_futu_symbol(symbol)
+    else:
+        display_object = {
+            "ibkr_positions": "IBKR_POSITIONS",
+            "ibkr_account_summary": "IBKR_ACCOUNT_SUMMARY",
+        }.get(family, symbol.upper())
+    print(f"# {display_object} {family} via {label}  ({len(records)} claims)")
     print(f"{'metric':<22}{'value':>20}  {'unit':<12}{'period':<12}{'tier'}")
     for r in records:
         tier = f"{r.posture.claim_type}/{r.posture.authority_level}"
@@ -347,13 +389,13 @@ def _do_fetch(args) -> int:
         symbol=symbol.upper(),
         cik10="<cik>",
         series_id=symbol,
-        host=config.get("MIRA_IBKR_HOST", "127.0.0.1") or "127.0.0.1",
-        port=config.get("MIRA_IBKR_PORT", "7497") or "7497",
+        **_local_endpoint_params(family),
     )
-    ingestion_route = "authorized_provider" if args.family.startswith("ibkr_") else "public_on_demand"
+    private_provider = family.startswith("ibkr_") or family.startswith("futu_")
+    ingestion_route = "authorized_provider" if private_provider else "public_on_demand"
     must_refresh_if = (
         "new broker snapshot, session reconnect, entitlement change, or position/account change"
-        if args.family.startswith("ibkr_") else ""
+        if private_provider else ""
     )
     result = emit_bundle(
         records, out_dir=args.out, research_object=display_object,
@@ -368,6 +410,37 @@ def _do_fetch(args) -> int:
     print(f"  claims={result['n_records']} series_rows={result['n_series_rows']} "
           f"ledgered={result['n_ledgered']} (disclosed/market values need no ledger)")
     return 0
+
+
+def _effective_fetch_family(family: str) -> str:
+    if family == "market_price" and _default_market_provider() == "futu_opend":
+        return "futu_market_price"
+    return family
+
+
+def _default_market_provider() -> str:
+    return (config.get("MIRA_MARKET_DATA_DEFAULT_SOURCE", "") or "").strip().lower()
+
+
+def _local_endpoint_params(family: str) -> dict[str, str]:
+    if family.startswith("futu_"):
+        return {
+            "host": config.get("MIRA_FUTU_HOST", "127.0.0.1") or "127.0.0.1",
+            "port": config.get("MIRA_FUTU_PORT", "11111") or "11111",
+        }
+    return {
+        "host": config.get("MIRA_IBKR_HOST", "127.0.0.1") or "127.0.0.1",
+        "port": config.get("MIRA_IBKR_PORT", "7497") or "7497",
+    }
+
+
+def _display_futu_symbol(symbol: str) -> str:
+    text = symbol.strip()
+    if "." in text:
+        market, code = text.split(".", 1)
+        return f"{market.upper()}.{code.upper()}"
+    futu_market = config.get("MIRA_FUTU_DEFAULT_MARKET", "US") or "US"
+    return f"{futu_market.upper()}.{text.upper()}"
 
 
 def _fmt(v) -> str:

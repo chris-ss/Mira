@@ -71,6 +71,12 @@ SOURCE_POLICY = {
         redistribution_allowed="no", readiness_impact="supports_working_view",
         freshness_status="current", confidence="medium",
     ),
+    "futu_opend_local": dict(
+        provider="Futu OpenD local Gateway", speaker="broker_gateway",
+        license_scope="user_authorized_brokerage_session", storage_scope="private",
+        redistribution_allowed="no", readiness_impact="supports_working_view",
+        freshness_status="current", confidence="medium",
+    ),
 }
 
 _DEFAULT_POLICY = dict(

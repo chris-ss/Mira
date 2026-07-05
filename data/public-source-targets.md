@@ -104,6 +104,11 @@ Yahoo Finance 适合做公开市场数据入口，但不作为公司原始事实
 [time-policy.md](time-policy.md) 的 Market-Date Resolution，再套用
 [live-data-source-policy.md](live-data-source-policy.md)。默认目标不是固定供应商，而是按市场选择最窄的可用实时或延迟源：
 
+Local override: if this machine has `MIRA_MARKET_DATA_DEFAULT_SOURCE=futu_opend`
+and OpenD is reachable, use `futu_opend_local` first for entitled quote-bearing
+markets configured in `private/mira-data.env`. Use public pages as fallback or
+cross-check, and keep raw broker/provider artifacts under `private/`.
+
 | need | preferred targets | fallback targets | output requirement |
 | --- | --- | --- | --- |
 | US index snapshot | official index/exchange page where available; Google Finance; Yahoo Finance; Stooq; authorized provider | timestamped CNBC/MarketWatch/Reuters/Bloomberg live coverage when quote endpoints fail | index level, pct change, `quote_time`, source freshness, VIX or volatility context when judging panic |

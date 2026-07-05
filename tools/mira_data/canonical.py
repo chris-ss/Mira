@@ -95,6 +95,16 @@ POSTURES: dict[str, Posture] = {
         acquisition_mode="authorized_provider",
         latency_class="live",
     ),
+    "futu_opend": Posture(
+        source_id="futu_opend_local",
+        source_class="market_price_and_trading",
+        authority_level="L5",
+        claim_type="market_pricing",
+        evidence_category="market_pricing",
+        access_method="local_gateway",
+        acquisition_mode="authorized_provider",
+        latency_class="live",
+    ),
 }
 
 
